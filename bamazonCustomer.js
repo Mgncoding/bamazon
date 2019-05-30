@@ -1,3 +1,5 @@
+// Getting my require
+const Table = require('cli-table3')
 const inquirer = require("inquirer");
 const mysql = require("mysql");
 // Create Connection to mysql
@@ -13,85 +15,28 @@ connection.connect(function (err) {
     if (err) throw err;
 
     console.log("Connect as id " + connection.threadId);
-    showProducts();
 });
-// Making Prompts for user interaction
-
-var productPurchase = {
-    type: 'input',
-    message: "Please selct the ID of the product you'd like to buy:",
-    name: 'productBought'
-};
-var productQuantity = {
-    type: 'input',
-    message: 'How many units would you like?',
-    name: 'newQuantity'
-};
-var newPurchase = {
-    type: 'list',
-    message: 'Did you need anything else?',
-    choices: ["Yes", "No"],
-    name: "productRestart"
-};
-// Displayin the current inventory from DB
-var showProducts = function () {
-    connection.query("SELECT * FROM products", function (err, res) {
-        console.log("DISPLAYING INVENTORY: " + "\n" + "-----------------");
-        for (var i = 0; i < res.length; i++) {
-            console.log("Item ID:" + res[i].id + "\n" + "Product Name:" + res[i].product_name + "\n" + "Department:" + res[i].department_name + "\n" + "Price:" + res[i].price + "\n" + "Available Quantity:" + res[i].stock_quantity + "\n-----------------------")
-        } 
-        console.log(err);
-        // Customer interact with Inventory
-        customerPrompt();
+// Displaying the products columns in a table npm
+var showProducts = function() {
+    connection.query("SELECT * FROM products", function(err, res) {
+        if (err) throw err;
+        console.log("----------------------" + "\n" + "Enjoy bAmazon..or Don't..Buy something.!" + "\n" + "--------------------" + "\n" + "Search for your Product.!" + "\n");  
+    // });
+    var table = new Table({
+        head: ['Product ID', 'Product Name', 'Department', 'Price', 'Quantity']
+      , colWidths: [20, 30, 20, 10, 10],
+      colAligns: ["center", "left", "left"],
+      style: {
+          head: ["teal"],
+          compact: true
+      }
     });
+    for(let i = 0; i < res.length; i++) {
+        table.push([res[i].id, res[i].product_name, res[i].department_name, res[i].price, res[i].stock_quantity])
+    }
+    console.log(table.toString());
+    console.log("")
+
+});
 };
-var customerPrompt = function (res) {
-    inquirer.prompt([productPurchase]).then(function (answers) {
-        // console.log(productPurchase)
-        // Turning answers into integers
-        var chooseProductId = parseInt(answers.productBought);
-        for (var i = 0; i < res; i++) {
-            // if (res[i].item_id === chooseProductId) 
-                console.log(chooseProductId);
-
-            
-            // Making sure the quantity can't go below 0
-            inquirer.prompt([productQuantity]).then(function (answers) {
-                console.log(productQuantity)
-                var chooseQuantityId = parseInt(answers.newQuantity);
-               
-                if (res[i].stock_quantity - chooseQuantityId >= 0) {
-                    console.log(productQuantity)
-                }else {console.log(err)}
-                    // Total
-                    // var totalCost = res[i].price * chooseQuantityId;
-                
-                    // else {console.log("Insufficient Quantity! Please enater a number less or equal to the selected Items quantity.")}
-                var adjustedQuantity = res[i].stock_quantity - chooseQuantityId;
-                var sql = "UPDATE products SET ? WHERE?";
-                var values = ["products", "stock_quantity", adjustedQuantity, "id", chooseProductId];
-                connection.query(sql, values, function (err, res) {
-                    if (err) {
-                        console.log(err);
-                        connection.end();
-                    }
-                    // If we want to display a cost
-                    // console.log("Product(s) bought!" + "\n" + "Total Cost of Transaction: $ " + totalCost);
-                    // Ask the user if they want to restart their purchase
-                    inquirer.prompt([newPurchase]).then(function (answers) {
-                        if (answers.productRestart === "yes") {
-                            showProducts();
-                        }
-                        else {
-                            console.log("Thank You");
-                            connection.end();
-                        }
-                    })
-
-                })
-                
-            });
-        }
-    })
-}
-// "UPDATE products SET ? WHERE ?"
+showProducts();
