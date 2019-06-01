@@ -14,7 +14,7 @@ var connection = mysql.createConnection({
 connection.connect(function (err) {
     if (err) throw err;
 
-    console.log("Connect as id " + connection.threadId);
+    // console.log("Connect as id " + connection.threadId);
 });
 // Displaying the products columns in a table npm
 var showProducts = function() {
@@ -35,7 +35,7 @@ var showProducts = function() {
         table.push([res[i].id, res[i].product_name, res[i].department_name, res[i].price, res[i].stock_quantity])
     }
     console.log(table.toString());
-    console.log("");
+    // console.log("");
     beginShop();
 
 });
@@ -54,7 +54,7 @@ var beginShop = function() {
             if (err) throw err;
             if (res.length === 0) {
                 console.log("That Product doesn't exist, Please enter a product from the list above.");
-                // beginShop();
+                beginShop();
             }else {
                 // console.log("All is okay!");
                 inquirer.prompt({
@@ -64,14 +64,24 @@ var beginShop = function() {
                 })
                 // Telling the buyer if we have that much in stock
                 .then(function(answers2) {
-                    var amount = answers2.quantity;
+                    var amount = answers2.newQuantity;
                     if (amount > res[0].stock_quantity) {
                         console.log("Sorry we only have " + res[0].stock_quantity + " items of the selected product");
-                        // beginShop()
+                        beginShop()
                     }else {
-                        console.log("");
+                        // console.log("");
                         console.log(res[0].product_name + " bought");
-                        console.log(quantity + " qty @ $" + res[0].price )
+                        console.log(amount + " qty @ $" + res[0].price )
+
+                        var adjusted = res[0].stock_quantity - amount;
+                        connection.query("UPDATE products SET stock_quantity = " + adjusted + " WHERE id = " + res[0].id, function(err, resUpdate) {
+                            if (err) throw err;
+                            // console.log("");
+                            console.log("Your Order has been accepted");
+                            console.log("Enjoy your new item.?!");
+                            // console.log("");
+                            connection.end();
+                        })
 
 
                     }
