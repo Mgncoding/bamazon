@@ -81,7 +81,41 @@ function lowInventory() {
         }
         console.log(table.toString());
         initialPrompt();
-
-
+    });
+};
+// Function to add inventory
+function addInventory() {
+    inquirer.prompt({
+        name: "item",
+        type: "input",
+        message: "What is the id number of the product for?"
+    }).then(function(answer) {
+        var selection = answer.item;
+        connection.query("SELECT * FROM products WHERE id = ?", selection, function(err,res) {
+            if (err) throw err;
+            if (res.length === 0) {
+                console.log("That product doesn't exist");
+                addInventory();
+            }else {
+                inquirer.prompt({
+                    name: "quantity",
+                    type: "input",
+                    message: "How many items do you want to add?"
+                }).then(function(answers2) {
+                    var amount = answers2.quantity;
+                    if (amount < 0) {
+                        console.log("Please enter a number higher than 0");
+                        addInventory();
+                    } else {
+                        connection.query("UPDATE products SET stock_quantity = " + amount + "WHERE id = " + res[0].id, function(err, resUpdate) {
+                            if (err) throw err;
+                            console.log("Quantity has been updated");
+                            console.log(amount + "items added to" + res[0].product_name);
+                            initialPrompt()
+                        })
+                    }
+                })
+            }
+        })
     })
 }
