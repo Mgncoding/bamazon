@@ -112,10 +112,53 @@ function addInventory() {
                             console.log("Quantity has been updated");
                             console.log(amount + "items added to" + res[0].product_name);
                             initialPrompt()
-                        })
-                    }
-                })
-            }
-        })
-    })
-}
+                        });
+                    };
+                });
+            };
+        });
+    });
+};
+// Function to add new products to the store 
+function addNewProduct() {
+    inquirer.prompt([
+        {  
+        type: "input",
+        name: "deptName",
+        message: "Please enter the new products name"
+        },
+        {
+            type: "input",
+            name: "deptAdd",
+            message: "What department does this item belong to?"
+        },
+        {
+           type: "input",
+           name: "deptPrice",
+           message: "Please enter the price of the new item." 
+        },
+        {
+            type: "input",
+            name: "deptStock",
+            message: "Please enter a stock quantity of this item"
+        }
+    ]). then(function(data) {
+        var name = data.deptName;
+        var department = data.deptAdd;
+        var price = data.deptPrice;
+        var stock = data.deptStock;
+        // adding connection query
+        connection.query("INSERT INTO products SET ?", {
+            product_name: name,
+            department_name: department,
+            price: price,
+            stock_quantity: stock
+        },
+        function(err, insertResult) {
+            if (err) throw err;
+            console.log("New product " + name + "has been added.");
+            initialPrompt();
+        }
+        );
+    });
+};

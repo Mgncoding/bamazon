@@ -25,9 +25,9 @@ var showProducts = function() {
     var table = new Table({
         head: ['Product ID', 'Product Name', 'Department', 'Price', 'Quantity']
       , colWidths: [10, 10, 20, 10, 10],
-      colAligns: ["center", "left", "left", "left", "center"],
+      colAligns: ["center", "left", "left", "right", "center"],
       style: {
-          head: ["teal"],
+          head: ["blue"],
           compact: true
       }
     });

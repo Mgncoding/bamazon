@@ -13,10 +13,10 @@ stock_quantity INT NULL
 );
 
 INSERT INTO products (product_name, department_name, price, stock_quantity)
-VALUES ('Galaxy S10', 'Electronics', 800, 10);
+VALUES ('Galaxy S10', 'Electronics', 800.00, 10);
 
 INSERT INTO products (product_name, department_name, price, stock_quantity)
-VALUES ('Comforter', 'Bedding', 75, 22);
+VALUES ('Comforter', 'Bedding', 75.00, 22);
 
 INSERT INTO products (product_name, department_name, price, stock_quantity)
 VALUES ('Taco Shells', 'Food', 2.68, 35);
@@ -28,7 +28,7 @@ INSERT INTO products (product_name, department_name, price, stock_quantity)
 VALUES ('T.V', 'Electronics', 246.78, 17);
 
 INSERT INTO products (product_name, department_name, price, stock_quantity)
-VALUES ('Chicken', 'Food', 9, 20);
+VALUES ('Chicken', 'Food', 9.00, 20);
 
 INSERT INTO products (product_name, department_name, price, stock_quantity)
 VALUES ('Yankee Candle', 'Home Decor', 19.99, 21);
@@ -37,7 +37,7 @@ INSERT INTO products (product_name, department_name, price, stock_quantity)
 VALUES ('Pillows', 'Bedding', 12.63, 9);
 
 INSERT INTO products (product_name, department_name, price, stock_quantity)
-VALUES ('Sunglasses', 'Personal Care', 33, 11);
+VALUES ('Sunglasses', 'Personal Care', 33.00, 11);
 
 INSERT INTO products (product_name, department_name, price, stock_quantity)
 VALUES ('Ice Cream', 'Food', 3.29, 47);

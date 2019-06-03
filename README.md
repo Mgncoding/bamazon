@@ -1,1 +1,4 @@
 # bamazon
+
+
+![Screenshot](bamazonCustomer.png)
