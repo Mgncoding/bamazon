@@ -36,7 +36,7 @@ function start() {
             case "Add to Inventory":
                 addInv();
                 break;
-            case "Add to Inventory":
+            case "Add new Products":
                 addProduct();
                 break;
             case "Quit":
@@ -192,4 +192,8 @@ function addProduct() {
         console.log(answer2.newProduct + "has been added to bAmazon.");
         display();
     });
+};
+// Function to quit the program
+function quitManager() {
+    connection.end();
 };
