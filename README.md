@@ -17,4 +17,4 @@
 
 Wasn't able to start the Third challenge. 
 
-Also, when I add and remove products they Update, but don't stay updated in the database.
+Also, when I add and remove products they Update, but don't stay updated in the database. I thought having the UPDATE in the query would update the table, but it doesn't save. 
